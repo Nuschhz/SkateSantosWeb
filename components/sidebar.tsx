@@ -9,7 +9,8 @@ import {
   // faUserEdit, 
   faTable, 
   faFolderPlus, 
-  faFolderTree, 
+  faFolderTree,
+  faTicket, 
   // faFolderBlank 
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
@@ -90,6 +91,21 @@ export default function Sidebar({
               { label: "Tabela de Estações", href: "/dashboard/stations/list", icon: faTable },
             ]}
           />
+
+          {/* Item Tickets */}
+          <li>
+            <Link
+              href="/dashboard/tickets"
+              className="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-all"
+            >
+              <div className={`flex items-center justify-center w-12 ${isExpanded ? "mr-3" : ""}`}>
+                <FontAwesomeIcon icon={faTicket} className="text-lg" />
+              </div>
+              <span className={`transition-opacity duration-1000 ${isExpanded ? "opacity-100" : "opacity-0 hidden"}`}>
+                Tickets
+              </span>
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>
