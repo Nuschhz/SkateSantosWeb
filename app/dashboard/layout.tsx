@@ -6,12 +6,14 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/src/lib/firebase";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
+import React from "react";
+import { DashboardDateProvider } from "@/src/context/DashboardDateContext";
 
-export default function DashboardLayout({
-  children,
-}: {
+interface DashboardLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,6 @@ export default function DashboardLayout({
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, [router]);
 
@@ -35,21 +36,23 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex">
-      <Sidebar
-        isExpanded={isSidebarExpanded}
-        setIsExpanded={setIsSidebarExpanded}
-      />
-      <div
-        className={`flex flex-1 flex-col h-screen transition-all duration-300 ${
-          isSidebarExpanded ? "ml-64" : "ml-20"
-        }`}
-      >
-        <Header user={user} />
-        <main className="flex-1 overflow-auto pt-16 p-6 bg-neutral-50">
-          {children}
-        </main>
+    <DashboardDateProvider>
+      <div className="flex">
+        <Sidebar
+          isExpanded={isSidebarExpanded}
+          setIsExpanded={setIsSidebarExpanded}
+        />
+        <div
+          className={`flex flex-1 flex-col h-screen transition-all duration-300 ${
+            isSidebarExpanded ? "ml-64" : "ml-20"
+          }`}
+        >
+          <Header user={user} />
+          <main className="flex-1 overflow-auto pt-16 p-6 bg-neutral-50">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </DashboardDateProvider>
   );
 }

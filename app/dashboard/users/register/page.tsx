@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from 'next/navigation';  // Importação correta para o App Router
+import { useRouter } from 'next/navigation';
 import { registerUser } from "@/src/lib/users";
 import { RegisterUserData } from "@/src/types";
 
@@ -17,7 +17,7 @@ export default function DashboardRegisterPage() {
   });
 
   const [error, setError] = useState<string>("");
-  const router = useRouter();  // Correto para navegação no App Router
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -41,7 +41,7 @@ export default function DashboardRegisterPage() {
       await registerUser(formData);
       console.log("Usuário registrado com sucesso!");
 
-      router.push("/dashboard");  // Redirecionamento após registro bem-sucedido
+      router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

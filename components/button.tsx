@@ -9,3 +9,4 @@ export default function Button ({title, onClick, className, disabled, type}: Ind
             </button> 
     )
 }
+

@@ -1,26 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { User } from "firebase/auth";
+import { User, signOut, getAuth } from "firebase/auth";
+import { useDashboardDate } from "@/src/context/DashboardDateContext"; // ajuste o caminho conforme sua estrutura
 
 interface HeaderProps {
   user?: User | null;
 }
 
 export default function Header({ user }: HeaderProps) {
-  const [date, setDate] = useState("");
+  const { selectedDate, setSelectedDate } = useDashboardDate();
   const router = useRouter();
   const pathname = usePathname();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
+    setSelectedDate(e.target.value);
   };
 
   const handleBack = () => {
     router.back();
+  };
+
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
   };
 
   const showBackButton = pathname.startsWith("/dashboard/users/list/");
@@ -35,7 +45,7 @@ export default function Header({ user }: HeaderProps) {
         )}
         <input
           name="date"
-          value={date}
+          value={selectedDate}
           onChange={handleChange}
           type="date"
           className="border border-gray-400 shadow-sm rounded-md p-2 border-none focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -50,8 +60,12 @@ export default function Header({ user }: HeaderProps) {
             {user?.email || "email@exemplo.com"}
           </span>
         </div>
-        <div className="bg-gray-700 shadow-sm rounded-full w-14 h-14 ml-3 border-blue-800 border-2" />
-        <div className="ml-4 text-gray-600 font-semibold">N/L</div>
+        <div
+          className="ml-4 text-gray-600 text-sm font-light self-start cursor-pointer hover:text-red-600 transition-colors"
+          onClick={handleLogout}
+        >
+          Sair
+        </div>
       </div>
     </header>
   );

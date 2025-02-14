@@ -32,7 +32,7 @@ export interface User {
   strikes: string;
 }
 
-interface RegisterUserData {
+export interface RegisterUserData {
   name: string;
   email: string;
   password: string;
@@ -40,4 +40,46 @@ interface RegisterUserData {
   phoneNumber: string;
   cpf: string;
   birthday: string;
+}
+
+export interface RegisterStationData {
+  cells: Array;
+  latitude: number;
+  longitude: number;
+}
+
+export interface Station {
+  id: string;
+  cells: { cellNumber: number; skateId: string | null }[];
+  latitude: number;
+  longitude: number;
+}
+
+export interface MapProps {
+  isLoaded: boolean;
+  latitude: number | null;
+  longitude: number | null;
+  setLatitude: (lat: number) => void;
+  setLongitude: (lng: number) => void;
+  stations: Array<{ latitude: number; longitude: number }>;
+}
+
+
+export interface Rental {
+  id: string;
+  userId: string;
+  createdAt: string;
+  endDate?: string | { seconds?: number; _seconds?: number; nanoseconds?: number; _nanoseconds?: number };
+  price?: number;
+}
+
+export interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    backgroundColor: string;
+    fill: boolean;
+  }[];
 }

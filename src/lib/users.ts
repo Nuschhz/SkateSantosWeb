@@ -1,4 +1,3 @@
-// @/src/lib/users.ts
 import api from "@/src/services/api";
 import { RegisterUserData } from "@/src/types";
 import { AxiosError } from "axios";
