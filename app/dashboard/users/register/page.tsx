@@ -52,7 +52,7 @@ export default function DashboardRegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-full">
       <main className="flex flex-col rounded-lg max-w-lg w-full">
         <h1 className="text-xl text-blue-600 font-medium">Adicionar Usuário</h1>
         <p className="my-2 text-sm text-gray-600">

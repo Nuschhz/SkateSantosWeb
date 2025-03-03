@@ -20,10 +20,10 @@ export default function StationsListPage() {
     loadStations();
   }, []);
 
-  const handleDeleteStation = async (toStationId: string) => {
+  const handleDeleteStation = async (stationId: string) => {
     if (confirm("Tem certeza que deseja deletar esta estação?")) {
       try {
-        await removeStation(toStationId);
+        await removeStation(stationId);
         const updatedStations = await fetchStations();
         setStations(updatedStations);
       } catch (error) {
@@ -36,45 +36,42 @@ export default function StationsListPage() {
     <div className="bg-gray-50 flex flex-col items-center min-w-screen min-h-screen p-4">
       <main className="flex flex-col w-full max-w-5xl">
         <p className="text-lg font-bold mb-4">Lista de Estações</p>
-
-        {loading ? (
-          <p>Carregando estações...</p>
-        ) : (
-          stations.map((station) => (
-            <div
-              key={station.id}
-              className="bg-white grid grid-cols-5 gap-4 py-4 px-6 rounded-lg shadow-md mt-4 w-full items-center"
-            >
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-400">Nome da estação</p>
-                <p className="font-medium truncate">{station.name}</p>
+        <div className="mt-4 overflow-y-auto pb-4" style={{ height: "60vh" }}>
+          {loading ? (
+            <p>Carregando estações...</p>
+          ) : (
+            stations.map((station) => (
+              <div
+                key={station.id}
+                className="bg-white grid grid-cols-5 gap-4 py-4 px-6 rounded-lg shadow-md mt-4 w-full items-center"
+              >
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-400">Nome da estação</p>
+                  <p className="font-medium truncate">{station.name}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-400">Células</p>
+                  <p className="text-gray-600">{station.cells.length}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-400">Latitude</p>
+                  <p className="text-gray-600">{station.latitude}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-400">Longitude</p>
+                  <p className="text-gray-600">{station.longitude}</p>
+                </div>
+                <div className="flex flex-col items-end">
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-rose-600 cursor-pointer text-lg"
+                    onClick={() => handleDeleteStation(station.id)}
+                  />
+                </div>
               </div>
-
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-400">Células</p>
-                <p className="text-gray-600">{station.cells.length}</p>
-              </div>
-
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-400">Latitude</p>
-                <p className="text-gray-600">{station.latitude}</p>
-              </div>
-
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-400">Longitude</p>
-                <p className="text-gray-600">{station.longitude}</p>
-              </div>
-
-              <div className="flex flex-col items-end">
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="text-rose-600 cursor-pointer text-lg"
-                  onClick={() => handleDeleteStation(station.id)}
-                />
-              </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </main>
     </div>
   );

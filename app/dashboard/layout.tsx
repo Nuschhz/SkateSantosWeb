@@ -48,7 +48,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }`}
         >
           <Header user={user} />
-          <main className="flex-1 overflow-auto pt-16 p-6 bg-neutral-50">
+          <main className="flex-1 overflow-hidden pt-16 p-6 bg-neutral-50">
             {children}
           </main>
         </div>
