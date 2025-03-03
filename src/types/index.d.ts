@@ -50,6 +50,7 @@ export interface RegisterStationData {
 
 export interface Station {
   id: string;
+  name: string;
   cells: { cellNumber: number; skateId: string | null }[];
   latitude: number;
   longitude: number;

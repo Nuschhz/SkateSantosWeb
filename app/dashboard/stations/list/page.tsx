@@ -46,8 +46,8 @@ export default function StationsListPage() {
               className="bg-white grid grid-cols-5 gap-4 py-4 px-6 rounded-lg shadow-md mt-4 w-full items-center"
             >
               <div className="flex flex-col">
-                <p className="text-sm text-gray-400">ID</p>
-                <p className="font-medium truncate">{station.id}</p>
+                <p className="text-sm text-gray-400">Nome da estação</p>
+                <p className="font-medium truncate">{station.name}</p>
               </div>
 
               <div className="flex flex-col">

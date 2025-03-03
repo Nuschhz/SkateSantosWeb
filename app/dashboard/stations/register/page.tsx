@@ -9,6 +9,7 @@ import MapComponent from "@/components/map";
 export default function DashboardRegisterPage() {
   const [formData, setFormData] = useState({
     address: "",
+    name: "",
     cells: 1,
     latitude: 0,
     longitude: 0,
@@ -90,7 +91,22 @@ export default function DashboardRegisterPage() {
           />
 
           <div className="flex flex-col gap-2 ml-4 justify-between">
+          
             <div className="flex flex-col gap-2">
+
+              {/* Campo de Nome */}
+              <div className="flex flex-col gap-2">
+                <label>Nome da estação</label>
+                <input
+                  name="name"
+                  placeholder="Nome"
+                  value={formData.name}
+                  onChange={handleChange}
+                  type="text"
+                  className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${removeArrow}`}
+                />
+              </div>
+
               {/* Campo de Células */}
               <div className="flex flex-row gap-2 items-center justify-between">
                 <label>Células</label>
