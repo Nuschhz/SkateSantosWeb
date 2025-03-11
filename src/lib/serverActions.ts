@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getUsers, addCredits, deleteUser } from "@/src/lib/users";
 import { getStations, deleteStation } from "@/src/lib/stations";
+import { getTickets } from "@/src/lib/tickets";
 
 export async function fetchUsers() {
   return await getUsers();
@@ -24,4 +25,8 @@ export async function fetchStations() {
 
 export async function removeStation(toStationId: string) {
   return await deleteStation(toStationId);
+}
+
+export async function fetchTickets() {
+  return await getTickets();
 }

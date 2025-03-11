@@ -84,3 +84,18 @@ export interface ChartData {
     fill: boolean;
   }[];
 }
+
+export interface FirebaseTimestamp {
+  _seconds: number;
+  _nanoseconds: number;
+}
+
+export interface TicketData {
+  id: string;
+  createdAt: FirebaseTimestamp;
+  endDate?: FirebaseTimestamp;
+  message: string;
+  status: string;
+  type: string;
+  userId: string;
+}
