@@ -1,11 +1,10 @@
 import axios from "axios";
 
+const isDev = process.env.NODE_ENV === "development";
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_ENDPOINT,
-  timeout: 10000,
-  headers: {
-    'x-api-key': process.env.NEXT_PUBLIC_SKATE_API,
-  }
+  baseURL: isDev
+    ? process.env.NEXT_PUBLIC_ENDPOINT
+    : "/api",
 });
 
 export default api;
