@@ -57,8 +57,7 @@ export interface Station {
 }
 
 export interface MapProps {
-  // isLoaded: boolean;  <-- REMOVA ESTA LINHA
-  latitude: number | null; // Pode ser null se ainda não selecionado
+  latitude: number | null;
   longitude: number | null;
   setLatitude: (lat: number) => void;
   setLongitude: (lng: number) => void;
