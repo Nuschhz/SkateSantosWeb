@@ -11,6 +11,5 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Inicializa o Firebase apenas uma vez
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
