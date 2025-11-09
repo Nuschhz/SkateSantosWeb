@@ -2,9 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useJsApiLoader } from "@react-google-maps/api";
 import { registerStation, getStations } from "@/src/lib/stations";
-import MapComponent from "@/components/map";
+import dynamic from "next/dynamic";
+
+const MapWithNoSSR = dynamic(() => import("@/components/map"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-[800px] h-[450px] bg-gray-100 rounded-md flex items-center justify-center">
+      Carregando mapa...
+    </div>
+  ),
+});
 
 export default function DashboardRegisterPage() {
   const [formData, setFormData] = useState({
@@ -20,11 +28,6 @@ export default function DashboardRegisterPage() {
   >([]);
   const [error, setError] = useState("");
   const router = useRouter();
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_API_GOOGLE_MAPS ?? "",
-    libraries: ["places"],
-  });
 
   useEffect(() => {
     async function fetchStations() {
@@ -62,41 +65,46 @@ export default function DashboardRegisterPage() {
       await registerStation(formData);
       router.push("/dashboard");
     } catch (err) {
-      setError("Erro ao cadastrar estação. Verifique os campos e preencha novamente.");
+      setError(
+        "Erro ao cadastrar estação. Verifique os campos e preencha novamente."
+      );
       console.error(err);
     }
   };
-
-  if (!isLoaded) {
-    return <div>Carregando mapa...</div>;
-  }
-
   return (
     <div className="flex items-center justify-center min-w-full min-h-full">
       <main className="flex flex-col">
         <h1 className="text-xl text-blue-600 font-medium">Adicionar Estação</h1>
         <p className="my-2 text-sm text-gray-600">
-          Preencha o formulário para adicionar uma nova estação ao banco de dados.
+          Preencha o formulário para adicionar uma nova estação ao banco de
+          dados.
         </p>
 
-        <form onSubmit={handleRegister} className="bg-white shadow-md p-6 flex flex-row">
-          {/* Componente do mapa */}
-          <MapComponent
-            isLoaded={isLoaded}
-            latitude={formData.latitude}
-            longitude={formData.longitude}
-            setLatitude={(latitude) => setFormData((prev) => ({ ...prev, latitude }))}
-            setLongitude={(longitude) => setFormData((prev) => ({ ...prev, longitude }))}
-            stations={stations}
-          />
+        <form
+          onSubmit={handleRegister}
+          className="bg-white shadow-md p-6 flex flex-row"
+        >
+          <div className="w-[800px] h-[450px]">
+            <MapWithNoSSR
+              latitude={formData.latitude}
+              longitude={formData.longitude}
+              setLatitude={(latitude) =>
+                setFormData((prev) => ({ ...prev, latitude }))
+              }
+              setLongitude={(longitude) =>
+                setFormData((prev) => ({ ...prev, longitude }))
+              }
+              stations={stations}
+            />
+          </div>
 
-          <div className="flex flex-col gap-2 ml-4 justify-between">
-          
+          <div className="flex flex-col gap-2 ml-4 justify-between w-64">
+            {" "}
             <div className="flex flex-col gap-2">
-
-              {/* Campo de Nome */}
               <div className="flex flex-col gap-2">
-                <label>Nome da estação</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Nome da estação
+                </label>
                 <input
                   name="name"
                   placeholder="Nome"
@@ -104,60 +112,67 @@ export default function DashboardRegisterPage() {
                   onChange={handleChange}
                   type="text"
                   className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${removeArrow}`}
+                  required
                 />
               </div>
 
-              {/* Campo de Células */}
-              <div className="flex flex-row gap-2 items-center justify-between">
-                <label>Células</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Células
+                </label>
                 <input
                   name="cells"
                   value={formData.cells}
                   onChange={handleChange}
                   type="number"
-                  min="1" // Garante que o usuário não possa inserir valores menores que 1
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-20"
+                  min="1"
+                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
                 />
               </div>
 
-              {/* Campo de Latitude */}
               <div className="flex flex-col gap-2">
-                <label>Latitude</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Latitude
+                </label>
                 <input
                   name="latitude"
                   placeholder="Latitude"
-                  value={formData.latitude}
+                  value={formData.latitude || ""}
                   onChange={handleChange}
                   type="number"
+                  step="any"
                   className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${removeArrow}`}
+                  required
                 />
               </div>
 
-              {/* Campo de Longitude */}
               <div className="flex flex-col gap-2">
-                <label>Longitude</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Longitude
+                </label>
                 <input
                   name="longitude"
                   placeholder="Longitude"
-                  value={formData.longitude}
+                  value={formData.longitude || ""}
                   onChange={handleChange}
                   type="number"
+                  step="any"
                   className={`border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${removeArrow}`}
+                  required
                 />
               </div>
             </div>
-
-            {/* Botão para cadastrar a estação */}
             <button
               type="submit"
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
             >
               Cadastrar Estação
             </button>
           </div>
         </form>
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 mt-4">{error}</p>}
       </main>
     </div>
   );
